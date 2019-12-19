@@ -1,5 +1,6 @@
 import React from 'react';
 import Axios from 'axios';
+import Card from './Card'
 
 
 
@@ -29,7 +30,8 @@ class searchLocation extends React.Component {
             restaurant_photo: [],
             cuisines_available: [],
             selected_category: "Takeaway",
-            }
+            searchResults: []
+          }
             
         
         this.googleApi = "AIzaSyAnhc0QVawRAJP9z0c07bkJCp8wyoai_gk"
@@ -105,7 +107,7 @@ handleSubmit(e) {
        }).then(async response => {
           const data = await Axios({
                         method:"GET",
-                        url: `https://developers.zomato.com/api/v2.1/search?entity_id=${this.state.entity_id}&entity_type=${this.state.entity_type}&count=5&category=Breakfast`,
+                        url: `https://developers.zomato.com/api/v2.1/search?entity_id=${this.state.entity_id}&entity_type=${this.state.entity_type}&count=5`,
                         headers: {
                           "user-key": "ac7e711aadc63ab23f578cab5c3051d4",
                           "content-type": "application/json"
@@ -115,7 +117,8 @@ handleSubmit(e) {
          
        }).then(response => {
          const searchResult = response.data.restaurants;
-         console.log(searchResult)
+         console.log("searchResult", searchResult)
+         this.setState({searchResults: searchResult})
 
         
 
@@ -197,14 +200,7 @@ handleSubmit(e) {
 
               <br />
 
-              <div style={{
-                  color: "red",
-                  height: "500px",
-                  width: "500px",
-                  border: "red solid 5px"
-                }}>
-                  {/* <img src="https://maps.googleapis.com/maps/api/staticmap?center=276Chisholm+road,Auburn+nsw&zoom=13&size=300x300&maptype=roadmap&markers=276Chisholm+road,Auburn+nsw&key=AIzaSyAnhc0QVawRAJP9z0c07bkJCp8wyoai_gk" alt="map description"/> */}
-              </div>
+              
 
               {/* <div
                 style={{
@@ -221,6 +217,40 @@ handleSubmit(e) {
                 </h4>
               </div> */}
             </form>
+
+            <div style={{
+                  color: "red",
+                  height: "500px",
+                  width: "500px",
+                  border: "red solid 5px"
+                }}>
+                  {/* <img src="https://maps.googleapis.com/maps/api/staticmap?center=276Chisholm+road,Auburn+nsw&zoom=13&size=300x300&maptype=roadmap&markers=276Chisholm+road,Auburn+nsw&key=AIzaSyAnhc0QVawRAJP9z0c07bkJCp8wyoai_gk" alt="map description"/> */}
+              </div>
+
+
+              <div>
+
+                {this.state.searchResults.map(result => (
+                 
+                  <div>
+                  <Card resturant_title={result.restaurant_name}/>
+                    <div>Restaurant name</div>
+                    <div>{result.restaurant.name}</div>
+                    <div>Cuisine</div>
+                    <div>{result.restaurant.location.address}</div>
+                    {result.restaurant.photos.map(photo => (
+                      <img src={photo.photo.url} height="200px" width="200px" alt="restaurant"/>
+                    ))}
+                  </div>
+                ))}
+
+
+
+              </div>
+
+
+
+
                 
             </div>
         )
