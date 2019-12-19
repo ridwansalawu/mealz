@@ -64,179 +64,88 @@ class searchLocation extends React.Component {
     }
 
 
-//     async searchByLocation() {
-//       Axios({
-//         method:"GET",
-//         url: `https://developers.zomato.com/api/v2.1/locations?query=${this.state.region}&lat=${this.state.latitude}&lon=${this.state.longitude}`,
-//         headers: {
-//           "user-key": "ac7e711aadc63ab23f578cab5c3051d4",
-//           "content-type": "application/json"
-//         }
-//       })
-//       .then(response => {
-//         const entity_id = response.data.location_suggestions[0].entity_id;
-//         const entity_type = response.data.location_suggestions[0].entity_type;
-
-//         this.setState({entity_id:entity_id})
-//         this.setState({entity_type:entity_type})
-//         console.log(entity_id);
-//         console.log(entity_type);
-//     });
-
-//     await  Axios({
-//       method:"GET",
-//       url: `https://developers.zomato.com/api/v2.1/search?entity_id=${this.state.entity_id}&entity_type=${this.state.entity_type}&count=5&category=Breakfast`,
-//       headers: {
-//         "user-key": "ac7e711aadc63ab23f578cab5c3051d4",
-//         "content-type": "application/json"
-//       }
-//     })
-//     .then(response => {
-//         const searchResult = response.data.restaurants;
-
-//         searchResult.forEach(item => {
-//           console.log(item);
-//           const restaurant_name = item.restaurant.name;
-//           const restaurant_location = item.restaurant.location.address;
-//           // const restaurant_photo = item.restaurant.photos[0].photo.url ? item.restaurant.photos[0].photo.url : "https://b.zmtcdn.com/data/reviews_photos/947/0d02c61e2f22f4b2859535d712286947_1525861858.jpg";
-//           const restaurant_photo = item.restaurant.photos;
-//           this.setState({restaurant_name: [...this.state.restaurant_name, restaurant_name]})
-//           this.setState({restaurant_location: [...this.state.restaurant_location, restaurant_location]})
-//           this.setState({restaurant_photo: [...this.state.restaurant_photo, restaurant_photo]})
-
-
-//           console.log(  `Name: ${this.state.restaurant_name}
-//           Address:${this.state.restaurant_location}
-//           Photo: ${this.state.restaurant_photo} `
-//          );
-// })
-
-//     })
 
 
 
 
 
+handleSubmit(e) {
 
+  const address = `${ this.state.street_number }${this.state.street_name.replace(/\s/g,"+")},+${this.state.suburb.replace(/\s+/g, '+')},+${this.state.region.replace(/\s+/g, '+')}+Australia`;
+  Axios(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${this.googleApi}`)
+       .then(response => {
+           const locationData = response.data;
+           const longitude = locationData.results[0].geometry.location.lng;
+           const latitude = locationData.results[0].geometry.location.lat;
+           const formatted_address = locationData.results[0].formatted_address;
+           this.setState({longitude: longitude})
+           this.setState({latitude: latitude})
+           this.setState({formatted_address: formatted_address})
 
+       }).then(async response => {
 
+       const data = await Axios({
+          method:"GET",
+          url: `https://developers.zomato.com/api/v2.1/locations?query=${this.state.region}&lat=${this.state.latitude}&lon=${this.state.longitude}`,
+          headers: {
+            "user-key": "ac7e711aadc63ab23f578cab5c3051d4",
+            "content-type": "application/json"
+          }
+        })
+        return data;
+      })
+      .then(response => {
+        const entity_id = response.data.location_suggestions[0].entity_id;
+        const entity_type = response.data.location_suggestions[0].entity_type;
 
+        this.setState({entity_id:entity_id})
+        this.setState({entity_type:entity_type})
+        console.log(entity_id);
+        console.log(entity_type);
+       }).then(async response => {
+          const data = await Axios({
+                        method:"GET",
+                        url: `https://developers.zomato.com/api/v2.1/search?entity_id=${this.state.entity_id}&entity_type=${this.state.entity_type}&count=5&category=Breakfast`,
+                        headers: {
+                          "user-key": "ac7e711aadc63ab23f578cab5c3051d4",
+                          "content-type": "application/json"
+                        }
+                      })
+          return data;
+         
+       }).then(response => {
+         const searchResult = response.data.restaurants;
+         console.log(searchResult)
 
-
-//     }
-
-
-
-
-
-
-    handleSubmit(e) {
-
-        const address = `${ this.state.street_number }${this.state.street_name.replace(/\s/g,"+")},+${this.state.suburb.replace(/\s+/g, '+')},+${this.state.region.replace(/\s+/g, '+')}+Australia`;
-        Axios(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${this.googleApi}`)
-             .then(response => {
-                 const locationData = response.data;
-                 const longitude = locationData.results[0].geometry.location.lng;
-                 const latitude = locationData.results[0].geometry.location.lat;
-                 const formatted_address = locationData.results[0].formatted_address;
-                 this.setState({longitude: longitude})
-                 this.setState({latitude: latitude})
-                 this.setState({formatted_address: formatted_address})
-
-             }).then(response => {
-
-             Axios({
-              method:"GET",
-              url: `https://developers.zomato.com/api/v2.1/locations?query=${this.state.region}&lat=${this.state.latitude}&lon=${this.state.longitude}`,
-              headers: {
-                "user-key": "ac7e711aadc63ab23f578cab5c3051d4",
-                "content-type": "application/json"
-              }
-            })
-            .then(response => {
-              const entity_id = response.data.location_suggestions[0].entity_id;
-              const entity_type = response.data.location_suggestions[0].entity_type;
-  
-              this.setState({entity_id:entity_id})
-              this.setState({entity_type:entity_type})
-              console.log(entity_id);
-              console.log(entity_type);
-          })
-
-             }).then(response => {
-              Axios({
-                              method:"GET",
-                              url: `https://developers.zomato.com/api/v2.1/search?entity_id=${this.state.entity_id}&entity_type=${this.state.entity_type}&count=5&category=Breakfast`,
-                              headers: {
-                                "user-key": "ac7e711aadc63ab23f578cab5c3051d4",
-                                "content-type": "application/json"
-                              }
-                            })
-               
-             }).then(response => {
-               const searchResult = response.data.restaurants;
-               console.log(searchResult)
-
-  //                 searchResult.forEach(item => {
-  //                   console.log(item);
-  //                   const restaurant_name = item.restaurant.name;
-  //                   const restaurant_location = item.restaurant.location.address;
-  //                   // const restaurant_photo = item.restaurant.photos[0].photo.url ? item.restaurant.photos[0].photo.url : "https://b.zmtcdn.com/data/reviews_photos/947/0d02c61e2f22f4b2859535d712286947_1525861858.jpg";
-  //                   const restaurant_photo = item.restaurant.photos;
-  //                   this.setState({restaurant_name: [...this.state.restaurant_name, restaurant_name]})
-  //                   this.setState({restaurant_location: [...this.state.restaurant_location, restaurant_location]})
-  //                   this.setState({restaurant_photo: [...this.state.restaurant_photo, restaurant_photo]})
-
-
-             })
-            
-
-  //           Axios({
-  //               method:"GET",
-  //               url: `https://developers.zomato.com/api/v2.1/search?entity_id=${this.state.entity_id}&entity_type=${this.state.entity_type}&count=5&category=Breakfast`,
-  //               headers: {
-  //                 "user-key": "ac7e711aadc63ab23f578cab5c3051d4",
-  //                 "content-type": "application/json"
-  //               }
-  //             })
-  //             .then(response => {
-  //                 const searchResult = response.data.restaurants;
-
-  //                 searchResult.forEach(item => {
-  //                   console.log(item);
-  //                   const restaurant_name = item.restaurant.name;
-  //                   const restaurant_location = item.restaurant.location.address;
-  //                   // const restaurant_photo = item.restaurant.photos[0].photo.url ? item.restaurant.photos[0].photo.url : "https://b.zmtcdn.com/data/reviews_photos/947/0d02c61e2f22f4b2859535d712286947_1525861858.jpg";
-  //                   const restaurant_photo = item.restaurant.photos;
-  //                   this.setState({restaurant_name: [...this.state.restaurant_name, restaurant_name]})
-  //                   this.setState({restaurant_location: [...this.state.restaurant_location, restaurant_location]})
-  //                   this.setState({restaurant_photo: [...this.state.restaurant_photo, restaurant_photo]})
-
-
-  //                   console.log(  `Name: ${this.state.restaurant_name}
-  //                   Address:${this.state.restaurant_location}
-  //                   Photo: ${this.state.restaurant_photo} `
-  //                  );
-  //  })
         
-              // })
+
+                searchResult.forEach(item => {
+                  console.log(item);
+                  const restaurant_name = item.restaurant.name;
+                  const restaurant_location = item.restaurant.location.address;
+                  const restaurant_photo = item.restaurant.photos[0].photo.url ? item.restaurant.photos[0].photo.url : "https://b.zmtcdn.com/data/reviews_photos/947/0d02c61e2f22f4b2859535d712286947_1525861858.jpg";
+                  console.log(restaurant_location);
+                  this.setState({restaurant_name: [...this.state.restaurant_name, restaurant_name]})
+                  this.setState({restaurant_location: [...this.state.restaurant_location, restaurant_location]})
+                  this.setState({restaurant_photo: [...this.state.restaurant_photo, restaurant_photo]})
+                
+                })
 
 
-             
-            
+       })
+      
+  console.log(`${this.state.latitude},${this.state.longitude}`);
+
+
+ 
 
 
 
-        console.log(`${this.state.latitude},${this.state.longitude}`);
+  e.preventDefault()
+
+}
 
 
-       
-
-
-
-        e.preventDefault()
-
-    }
 
 
     
@@ -254,7 +163,7 @@ class searchLocation extends React.Component {
         return (
 
             <div className="main-container">
-            <h1>input your address manually</h1>
+            <h1>address</h1>
             <form onSubmit={this.handleSubmit}>
               <label>Street no </label>
               <input
@@ -321,4 +230,3 @@ class searchLocation extends React.Component {
 
 
 export default searchLocation;
-
