@@ -1,0 +1,13 @@
+{
+    "name": "mealz",
+    "license": "MIT",
+    "engines": {
+      "node": "12.13.0",
+      "yarn": "1.19.1"
+    },
+    "scripts": {
+      "build": "yarn --cwd web install && yarn --cwd web build",
+      "deploy": "cp -a web/build/. public/",
+      "heroku-postbuild": "yarn build && yarn deploy"
+    }
+  }
