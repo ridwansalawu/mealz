@@ -1,13 +1,21 @@
 {
-    "name": "mealz",
-    "license": "MIT",
-    "engines": {
-      "node": "12.13.0",
-      "yarn": "1.19.1"
-    },
-    "scripts": {
-      "build": "yarn --cwd web install && yarn --cwd web build",
-      "deploy": "cp -a web/build/. public/",
-      "heroku-postbuild": "yarn build && yarn deploy"
-    }
+  "name": "mealz",
+  "license": "MIT",
+  "engines": {
+    "node": "12.13.0",
+    "yarn": "1.19.1"
+  },
+  "scripts": {
+    "build": "yarn --cwd web install && yarn --cwd web build",
+    "deploy": "cp -a web/build/. public/",
+    "heroku-postbuild": "yarn build && yarn deploy"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.26",
+    "@fortawesome/free-solid-svg-icons": "^5.12.0",
+    "@fortawesome/react-fontawesome": "^0.1.8",
+    "@reach/router": "^1.2.1",
+    "axios": "^0.19.0",
+    "bootstrap": "4.4.1"
   }
+}

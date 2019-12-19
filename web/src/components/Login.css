@@ -1,0 +1,12 @@
+.login-form{
+    width: 650px;
+    height: 550px;
+    border: 1px solid black;
+    border-radius: 30px;
+    margin: 0 auto;
+}
+.container-position{
+    width: 325px;
+    margin: 100px auto;
+    
+}
