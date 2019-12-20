@@ -1,5 +1,5 @@
 import React from 'react'
-import Spinner from './component/Spinner'
+import Spinner from './components/Spinner'
 import Axios from 'axios'
 import _ from 'lodash'
 // import { Link } from 'react-feather';
