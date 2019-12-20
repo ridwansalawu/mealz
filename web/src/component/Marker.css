@@ -1,0 +1,12 @@
+.marker {
+    width: 45px;
+    height: 45px;
+    border-radius: 50% 50% 50% 0;
+    border-color: #FFD000;
+    background: #FFD000;
+    position: absolute;
+    transform: rotate(-45deg);
+    left: 50%;
+    top: 50%;
+    margin: -20px 0 0 -20px;
+  }

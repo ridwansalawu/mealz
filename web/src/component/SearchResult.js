@@ -42,10 +42,8 @@ export default class SearchResult extends React.Component{
             return e.restaurant
         })
         const getName = getResp.map((j)=>  <div className="col-4" key={j.id}>
-        <Link class="card-link" to={'/restaurant/'+ j.id}>
-        <Card  resturant_title={j.name} cuisine={j.cuisines} location_name={j.location.address}
-         card_img={j.featured_image} />
-         </Link>
+        <Link class="card-link" to={'/restaurant/'+ j.id}><Card  resturant_title={j.name} cuisine={j.cuisines} location_name={j.location.address}
+         card_img={j.featured_image} /></Link>
         </div> )
         return(
         <div className="container search-results">
@@ -55,9 +53,6 @@ export default class SearchResult extends React.Component{
             </div>
             <br/>
             <div>
-            <div className="row">
-            <h1>Sushi places in Sydney</h1>
-            </div>
             <div className="row">
                 {getName}
              </div>    
