@@ -16,6 +16,9 @@ class Navigation extends React.Component {
               <li className="nav-item">
               <Link className="nav-link menu-text" to="/searchlocation/">Search by Location</Link>
               </li>
+              <li className="nav-item">
+              <Link className="nav-link menu-text"  to="/signUp">SignUp</Link>
+              </li>
               
               <li className="nav-item">
               <Link className="nav-link menu-text" to="/">Logout</Link>

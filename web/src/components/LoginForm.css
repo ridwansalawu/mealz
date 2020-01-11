@@ -29,9 +29,6 @@ p {
 .button-holder{
     padding: 20px;
 }
-.button-holder button {
-    margin-right: 8px;
-}
 .credit {
     position: absolute;
     left: 0;

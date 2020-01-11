@@ -13,63 +13,51 @@ export default class Register extends React.Component{
             password_confirmation: ''
         };
     }
-    // const userProps = {
-    //     isLoggedIn: this.state.isLoggedIn,
-    //     currentUser: this.state.currentUser,
-    //     logout: () => this.handleLogout(),
-    //     login: (email, pass) => this.handleLogin(email, pass)
-    //   };
     onSignupClick() {
-        // TODO: validate inputs
         const user = this.props.user;
         this.props.onSignup(this.state)
-
-        
     }
-
     handleNameChange = (e) => {
         this.setState({name: e.target.value});
     }
-
     handleEmailChange = (e) => {
         this.setState({email: e.target.value});
     }
-
     handlePasswordChange = (e) => {
         this.setState({password: e.target.value});
     }
-
     handleConfirmPasswordChange = (e) => {
         this.setState({password_confirmation: e.target.value});
     }
-
     render() {
         const user = this.props.user;
         return (
-            <div>
-    
+            <div className="background">
             <div className="container">
-                <h1>Sign Up</h1>
-
+            <div className='login-form text-left'><div className="container-position">
+                <h1 className='text-center'>Sign Up</h1>
+                <div className="form-group">
                 <label htmlFor="name"><b>Name</b></label>
-                <input  type="text" placeholder="Enter your Name" name="name" required
+                <input className="form-control" type="text" placeholder="Enter your Name" name="name" required
                     value={this.state.name} onChange={this.handleNameChange}  />
-
+</div>
+<div className="form-group">
                 <label htmlFor="email"><b>Email</b></label>
-                <input type="text" placeholder="Enter Email" name="email" required
+                <input className="form-control" type="text" placeholder="Enter Email" name="email" required
                     value={this.state.email} onChange={this.handleEmailChange}  />
-
+</div><div className="form-group">
                 <label htmlFor="psw"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="psw" required 
+                <input className="form-control" type="password" placeholder="Enter Password" name="psw" required 
                     value={this.state.password} onChange={this.handlePasswordChange} />
-
+</div><div className="form-group">
                 <label htmlFor="psw-repeat"><b>Repeat Password</b></label>
-                <input type="password" placeholder="Repeat Password" name="psw-repeat" required
+                <input className="form-control" type="password" placeholder="Repeat Password" name="psw-repeat" required
                     value={this.state.password_confirmation} onChange={this.handleConfirmPasswordChange}  />
-
-                <div className="clearfix">
-                    <button type="button" className="cancelbtn" onClick={() => this.props.onCancelClick() }>Cancel</button>
-                    <button type="submit" className="signupbtn" onClick={() => this.onSignupClick() }>Sign Up</button>
+</div>
+                <div className="text-center button-holder">
+                <button type="submit" className="signupbtn btn btn-primary btn-lg" onClick={() => this.onSignupClick() }>Sign Up</button>
+                    <button type="button" className="cancelbtn btn btn-primary btn-lg" onClick={() => this.props.onCancelClick() }>Cancel</button>
+                </div></div>
                 </div>
                 </div>
             </div>);

@@ -3,17 +3,17 @@ nav {
     background: #FFFFFF;
     box-shadow: 2px 11px 10px 0 rgba(0,0,0,0.10);
 }
-
 .logo{
     height:50px;
 }
-
 .bg-dark {
     background-color:#2F2F2F !important;
 }
-
 li .menu-text {
     font-size: 18px;
     padding: 18px 24px 0 !important;
-
+}
+.user-name{
+    float: right !important;
+    color: grey;
 }
